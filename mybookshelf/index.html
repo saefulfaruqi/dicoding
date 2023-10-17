@@ -1,0 +1,89 @@
+<!-- FILEPATH: /C:/Users/ACER/Documents/dicoding/mybookshelf/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Bookshelf</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to My Bookshelf</h1>
+    </header>
+    <div class="container">
+      <div class="card left">
+        <h2>Tambah List Buku:</h2>
+        <form class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" />
+          <label for="author">Author:</label>
+          <input type="text" id="author" name="author" />
+          <label for="year">Year:</label>
+          <input type="number" id="year" name="year" />
+          <div class="checkbox-form">
+            <p>Status :</p>
+            <label class="switch">
+              <input type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <input type="submit" value="Tambah Buku" />
+        </form>
+      </div>
+      <div class="card right">
+        <div class="search">
+          <form class="form-search">
+            <label for="search-title">Search by Title:</label>
+            <input type="text" id="search-title" name="search-title" />
+            <button type="submit">Search</button>
+          </form>
+        </div>
+
+        <div class="wrapper">
+          <div class="wrapper left">
+            <h3>Yang sudah usai :</h3>
+            <ul>
+              <li>
+                <h3>Book Title</h3>
+              </li>
+              <li>
+                <p>Author Name</p>
+              </li>
+              <li>
+                <p>Year Published</p>
+              </li>
+              <li>
+                <span>completed</span>
+              </li>
+            </ul>
+          </div>
+          <div class="wrapper right">
+            <h3>Sedang di usahakan :</h3>
+            <ul>
+              <li>
+                <h3>Book Title</h3>
+              </li>
+              <li>
+                <p>Author Name</p>
+              </li>
+              <li>
+                <p>Year Published</p>
+              </li>
+              <li>
+                <span>uncompleted</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
