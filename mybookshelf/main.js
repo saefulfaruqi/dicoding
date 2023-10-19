@@ -7,13 +7,13 @@ function generateId() {
   return +new Date();
 }
 
-function generateBooklistObject(id, title, author, year, isCompleted) {
+function generateBooklistObject(id, title, author, year, isComplete) {
   return {
     id,
     title,
     author,
     year,
-    isCompleted,
+    isComplete,
   };
 }
 
@@ -66,10 +66,10 @@ function findBookIndex(bookId) {
 }
 
 function addBooklist() {
-  const inputTitle = document.getElementById("title").value;
-  const inputAuthor = document.getElementById("author").value;
-  const inputYear = document.getElementById("year").value;
-  const isCompleted = document.getElementById("isCompleted").checked;
+  const inputTitle = document.getElementById("title").value ?? null;
+  const inputAuthor = document.getElementById("author").value ?? null;
+  const inputYear = parseInt(document.getElementById("year").value);
+  const isComplete = document.getElementById("isComplete").checked;
 
   const generatedID = generateId();
   const bookListObject = generateBooklistObject(
@@ -77,11 +77,13 @@ function addBooklist() {
     inputTitle,
     inputAuthor,
     inputYear,
-    isCompleted
+    isComplete
   );
 
-  if (inputTitle === "" && inputAuthor === "" && inputYear === "") {
-    alert("Data tidak boleh kosong");
+  console.log(bookListObject)
+
+  if (inputTitle === null || inputAuthor === null || isNaN(inputYear)) {
+    alert("Data tidak boleh kosong"); 
   } else {
     booklist.push(bookListObject);
   }
@@ -108,7 +110,7 @@ function makeBookList(bookObject) {
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("button-container");
   container.append(buttonContainer);
-  if (bookObject.isCompleted) {
+  if (bookObject.isComplete) {
     const undoButton = document.createElement("button");
     undoButton.innerText = "Belum Selesai";
     undoButton.classList.add("undo-button");
@@ -154,7 +156,7 @@ function addBookToCompleted(bookId) {
 
   if (bookTarget === null) return;
 
-  bookTarget.isCompleted = true;
+  bookTarget.isComplete = true;
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
 }
@@ -175,7 +177,7 @@ function undoTaskFromCompleted(bookId) {
 
   if (bookTarget === null) return;
 
-  bookTarget.isCompleted = false;
+  bookTarget.isComplete = false;
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
 }
@@ -197,7 +199,7 @@ function searchBook() {
 
   for (const bookListItem of filteredBooklist) {
     const bookElement = makeBookList(bookListItem);
-    if (!bookListItem.isCompleted) {
+    if (!bookListItem.isComplete) {
       uncompletedBookList.append(bookElement);
     } else {
       completedBookList.append(bookElement);
@@ -217,7 +219,6 @@ function searchBook() {
       book.style.display = "none";
     }
   });
-
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -246,7 +247,7 @@ document.addEventListener(RENDER_EVENT, function () {
   const completedBookList = document.getElementById("completed-booklist");
   completedBookList.innerHTML = "";
 
-  const checkbox = document.getElementById("isCompleted");
+  const checkbox = document.getElementById("isComplete");
   const submitButton = document.getElementById("submitButton");
 
   checkbox.addEventListener("change", function () {
@@ -259,7 +260,7 @@ document.addEventListener(RENDER_EVENT, function () {
 
   for (const bookListItem of booklist) {
     const bookElement = makeBookList(bookListItem);
-    if (!bookListItem.isCompleted) {
+    if (!bookListItem.isComplete) {
       uncompletedBookList.append(bookElement);
     } else completedBookList.append(bookElement);
   }
