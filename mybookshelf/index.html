@@ -17,9 +17,9 @@
       <h1>Welcome to My Bookshelf</h1>
     </header>
     <div class="container">
-      <div class="card left">
+      <div class="card left" id="add-booklist">
         <h2>Tambah List Buku:</h2>
-        <form class="form-group">
+        <form class="form-group" action="#" id="form">
           <label for="title">Title:</label>
           <input type="text" id="title" name="title" />
           <label for="author">Author:</label>
@@ -29,56 +29,36 @@
           <div class="checkbox-form">
             <p>Status :</p>
             <label class="switch">
-              <input type="checkbox" />
+              <input type="checkbox" id="isCompleted" name="isCompleted" value="false"/>
               <span class="slider round"></span>
             </label>
           </div>
-          <input type="submit" value="Tambah Buku" />
+          <input
+            type="submit"
+            class="btn-submit"
+            value="Tambah ke Buku Belum di Baca"
+            name="Submit"
+            id="submitButton"
+          />
         </form>
       </div>
       <div class="card right">
         <div class="search">
-          <form class="form-search">
-            <label for="search-title">Search by Title:</label>
-            <input type="text" id="search-title" name="search-title" />
-            <button type="submit">Search</button>
+          <form class="form-search" id="search-form">
+            <label for="search-input">Search by Title:</label>
+            <input type="text" id="search-input" name="search-input" />
+            <button type="submit" class="btn-submit" name="Search">Search</button>
           </form>
         </div>
 
         <div class="wrapper">
           <div class="wrapper left">
             <h3>Yang sudah usai :</h3>
-            <ul>
-              <li>
-                <h3>Book Title</h3>
-              </li>
-              <li>
-                <p>Author Name</p>
-              </li>
-              <li>
-                <p>Year Published</p>
-              </li>
-              <li>
-                <span>completed</span>
-              </li>
-            </ul>
+            <div class="list-item" id="booklist"></div>
           </div>
           <div class="wrapper right">
             <h3>Sedang di usahakan :</h3>
-            <ul>
-              <li>
-                <h3>Book Title</h3>
-              </li>
-              <li>
-                <p>Author Name</p>
-              </li>
-              <li>
-                <p>Year Published</p>
-              </li>
-              <li>
-                <span>uncompleted</span>
-              </li>
-            </ul>
+            <div class="list-item" id="completed-booklist"></div>
           </div>
         </div>
       </div>
