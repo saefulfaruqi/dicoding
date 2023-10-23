@@ -7,19 +7,23 @@ class ArchiveNotes extends React.Component {
     return (
       <>
         <h2>Arsip</h2>
-        <div className="notes-list">
-          {this.props.archiveNotes.map((note) => {
-            return (
-              <CardNotes
-                key={note.id}
-                id={note.id}
-                {...note}
-                onDeleteArchive={this.props.onDeleteArchive}
-                onMoveToActive={this.props.moveToActive}
-              />
-            );
-          })}
-        </div>
+        {this.props.archiveNotes.length === 0 ? (
+          <p className="notes-list__empty-message">Tidak ada catatan arsip</p>
+        ) : (
+          <div className="notes-list">
+            {this.props.archiveNotes.map((note) => {
+              return (
+                <CardNotes
+                  key={note.id}
+                  id={note.id}
+                  {...note}
+                  onDeleteArchive={this.props.onDeleteArchive}
+                  onMoveToActive={this.props.moveToActive}
+                />
+              );
+            })}
+          </div>
+        )}
       </>
     );
   }
