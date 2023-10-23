@@ -5,6 +5,7 @@ class NotesForm extends React.Component {
     this.state = {
       title: "",
       body: "",
+      titleLength: 0,
     };
 
     this.onTitleChangeHandler = this.onTitleChangeHandler.bind(this);
@@ -12,7 +13,10 @@ class NotesForm extends React.Component {
     this.onSubmitEventHandler = this.onSubmitEventHandler.bind(this);
   }
   onTitleChangeHandler(event) {
-    this.setState({ title: event.target.value });
+    const title = event.target.value;
+    if (title.length <= 50) {
+      this.setState({ title, titleLength: title.length });
+    }
   }
   onBodyChangeHandler(event) {
     this.setState({ body: event.target.value });
@@ -20,13 +24,16 @@ class NotesForm extends React.Component {
   onSubmitEventHandler(event) {
     event.preventDefault();
     this.props.onAddNotesHandler(this.state);
+    this.setState({ title: "", body: "", titleLength: 0 });
   }
   render() {
     return (
       <div className="note-input">
         <h2>Buat Catatan</h2>
         <form onSubmit={this.onSubmitEventHandler}>
-          <p className="note-input__title__char-limit">Sisa Karakter</p>
+          <p className="note-input__title__char-limit">
+            Sisa Karakter : {50 - this.state.titleLength}
+          </p>
           <input
             type="text"
             id="title"

@@ -1,5 +1,5 @@
 import React from "react";
-import { getInitialData, showFormattedDate } from "../utils";
+import { getInitialData } from "../utils";
 import Header from "./Header";
 import NotesForm from "./NotesForm";
 import ActiveNotes from "./ActiveNotes";
@@ -11,11 +11,10 @@ class NotesApp extends React.Component {
     this.state = {
       activeNotes: getInitialData(),
       archiveNotes: [],
-      initialActiveNotes: [],
-      initialArchiveNotes: [],
+      filteredActiveNotes: [],
+      filterdArchiveNotes: [],
+      searchValue: "",
     };
-
-    this.initialActiveNotes = [...this.state.activeNotes];
 
     this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
     this.onDeleteActiveHandler = this.onDeleteActiveHandler.bind(this);
@@ -25,27 +24,21 @@ class NotesApp extends React.Component {
     this.searchByTitle = this.searchByTitle.bind(this);
   }
 
-  updateInitialData = () => {
-    this.setState({
-      initialActiveNotes: [...this.state.activeNotes],
-      initialArchiveNotes: [...this.state.archiveNotes],
-    });
-  };
-
-  searchByTitle(title) {
-    if (title === "") {
+  searchByTitle(titleInput) {
+    this.setState({ searchValue: titleInput });
+    if (titleInput === "") {
       this.setState({
-        activeNotes: [...this.state.initialActiveNotes],
-        archiveNotes: [...this.state.initialArchiveNotes],
+        filteredActiveNotes: [],
+        filterdArchiveNotes: [],
       });
     } else {
-      const activeNotes = this.state.initialActiveNotes.filter((note) =>
-        note.title.toLowerCase().includes(title.toLowerCase())
+      const filteredActiveNotes = this.state.activeNotes.filter((note) =>
+        note.title.toLowerCase().includes(titleInput.toLowerCase())
       );
-      const archiveNotes = this.state.initialArchiveNotes.filter((note) =>
-        note.title.toLowerCase().includes(title.toLowerCase())
+      const filterdArchiveNotes = this.state.archiveNotes.filter((note) =>
+        note.title.toLowerCase().includes(titleInput.toLowerCase())
       );
-      this.setState({ activeNotes, archiveNotes });
+      this.setState({ filteredActiveNotes, filterdArchiveNotes });
     }
   }
 
@@ -54,42 +47,36 @@ class NotesApp extends React.Component {
       (note) => note.id !== id
     );
     const noteToMove = this.state.archiveNotes.find((note) => note.id === id);
-    this.setState(
-      {
-        archiveNotes,
-        activeNotes: [
-          ...this.state.activeNotes,
-          { ...noteToMove, archived: false },
-        ],
-      },
-      this.updateInitialData()
-    );
+    this.setState({
+      archiveNotes,
+      activeNotes: [
+        ...this.state.activeNotes,
+        { ...noteToMove, archived: false },
+      ],
+    });
   }
   moveToArchiveHandler(id) {
     const activeNotes = this.state.activeNotes.filter((note) => note.id !== id);
     const noteToMove = this.state.activeNotes.find((note) => note.id === id);
-    this.setState(
-      {
-        activeNotes,
-        archiveNotes: [
-          ...this.state.archiveNotes,
-          { ...noteToMove, archived: true },
-        ],
-      },
-      this.updateInitialData()
-    );
+    this.setState({
+      activeNotes,
+      archiveNotes: [
+        ...this.state.archiveNotes,
+        { ...noteToMove, archived: true },
+      ],
+    });
   }
 
   onDeleteActiveHandler(id) {
     const activeNotes = this.state.activeNotes.filter((note) => note.id !== id);
-    this.setState({ activeNotes }, this.updateInitialData());
+    this.setState({ activeNotes });
   }
 
   onDeleteArchiveHandler(id) {
     const archiveNotes = this.state.archiveNotes.filter(
       (note) => note.id !== id
     );
-    this.setState({ archiveNotes }, this.updateInitialData());
+    this.setState({ archiveNotes });
   }
 
   onAddNotesHandler({ title, body }) {
@@ -106,22 +93,31 @@ class NotesApp extends React.Component {
           },
         ],
       };
-    }, this.updateInitialData());
+    });
   }
 
   render() {
     return (
       <div className="note-app">
         <Header searchByTitle={this.searchByTitle} />
+
         <div className="note-app__body">
           <NotesForm onAddNotesHandler={this.onAddNotesHandler} />
           <ActiveNotes
-            activeNotes={this.state.activeNotes}
+            activeNotes={
+              this.state.searchValue !== ""
+                ? this.state.filteredActiveNotes
+                : this.state.activeNotes
+            }
             onDeleteActive={this.onDeleteActiveHandler}
             moveToArchive={this.moveToArchiveHandler}
           />
           <ArchiveNotes
-            archiveNotes={this.state.archiveNotes}
+            archiveNotes={
+              this.state.searchValue !== ""
+                ? this.state.filterdArchiveNotes
+                : this.state.archiveNotes
+            }
             onDeleteArchive={this.onDeleteArchiveHandler}
             moveToActive={this.moveToActiveHandler}
           />
