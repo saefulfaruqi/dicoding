@@ -6,6 +6,7 @@
 .pnp.js
 *.zip
 .zip
+/.zip
 
 # testing
 /coverage
