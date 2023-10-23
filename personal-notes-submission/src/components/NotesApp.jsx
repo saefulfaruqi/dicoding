@@ -16,7 +16,6 @@ class NotesApp extends React.Component {
     };
 
     this.initialActiveNotes = [...this.state.activeNotes];
-    
 
     this.onAddNotesHandler = this.onAddNotesHandler.bind(this);
     this.onDeleteActiveHandler = this.onDeleteActiveHandler.bind(this);
@@ -55,40 +54,42 @@ class NotesApp extends React.Component {
       (note) => note.id !== id
     );
     const noteToMove = this.state.archiveNotes.find((note) => note.id === id);
-    this.setState({
-      archiveNotes,
-      activeNotes: [
-        ...this.state.activeNotes,
-        { ...noteToMove, archived: false },
-      ],
-    });
-    this.updateInitialData();
+    this.setState(
+      {
+        archiveNotes,
+        activeNotes: [
+          ...this.state.activeNotes,
+          { ...noteToMove, archived: false },
+        ],
+      },
+      this.updateInitialData()
+    );
   }
   moveToArchiveHandler(id) {
     const activeNotes = this.state.activeNotes.filter((note) => note.id !== id);
     const noteToMove = this.state.activeNotes.find((note) => note.id === id);
-    this.setState({
-      activeNotes,
-      archiveNotes: [
-        ...this.state.archiveNotes,
-        { ...noteToMove, archived: true },
-      ],
-    });
-    this.updateInitialData();
+    this.setState(
+      {
+        activeNotes,
+        archiveNotes: [
+          ...this.state.archiveNotes,
+          { ...noteToMove, archived: true },
+        ],
+      },
+      this.updateInitialData()
+    );
   }
 
   onDeleteActiveHandler(id) {
     const activeNotes = this.state.activeNotes.filter((note) => note.id !== id);
-    this.setState({ activeNotes });
-    this.updateInitialData();
+    this.setState({ activeNotes }, this.updateInitialData());
   }
 
   onDeleteArchiveHandler(id) {
     const archiveNotes = this.state.archiveNotes.filter(
       (note) => note.id !== id
     );
-    this.setState({ archiveNotes });
-    this.updateInitialData();
+    this.setState({ archiveNotes }, this.updateInitialData());
   }
 
   onAddNotesHandler({ title, body }) {
@@ -105,7 +106,7 @@ class NotesApp extends React.Component {
           },
         ],
       };
-    });
+    }, this.updateInitialData());
   }
 
   render() {
